@@ -78,7 +78,6 @@ public class countdownScript : MonoBehaviour
         clock.OnInteract += delegate () { StartClock(); return false; };
     }
 
-
     void Start()
     {
         GenerateNumbers();
