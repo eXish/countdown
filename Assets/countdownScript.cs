@@ -82,6 +82,7 @@ public class countdownScript : MonoBehaviour
 
     void Start()
     {
+        for (int i = 0; i < 15; i++) solutionTest[i] = false;
         GenerateNumbers();
         while ((target < 100 || target > 1000))
         {
