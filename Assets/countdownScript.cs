@@ -39,7 +39,7 @@ public class countdownScript : MonoBehaviour
     private int equationsDone = 0;
     private int boardFirst = 0;
     private int mostRecentSolve = 0;
-    private bool[] solutionTest = new bool[15];
+    private int[] solutionTest = new int[15];
 
     //Logging
     static int moduleIdCounter = 1;
@@ -82,17 +82,28 @@ public class countdownScript : MonoBehaviour
 
     void Start()
     {
-        for (int i = 0; i < 15; i++) solutionTest[i] = false;
         GenerateNumbers();
-        while ((target < 100 || target > 1000))
+        target = 1;
+        solutionTest = new int[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
+        while ((target < 100 || target > 999))
         {
-            if (!(solutionTest.Contains(false))) //this avoids infinite loops
+            if ((solutionTest.Count() < 3)) //this avoids infinite loops, or just bad situations
             {
                 GenerateNumbers();
-                for (int i = 0; i < 15; i++) solutionTest[i] = false;
+                Debug.LogFormat("<Countdown #{0}> Numbers have been regenerated.", moduleId);
+                solutionTest = new int[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
+                Debug.LogFormat("<Countdown #{0}> solutionTest reinstantiated.", moduleId);
             }
-            GenerateTarget();
-            solutionTest[chosenEquation] = true; //mark the equation as used
+            int chosenEqIndex = UnityEngine.Random.Range(0, solutionTest.Count());
+            GenerateTarget(solutionTest[chosenEqIndex]);
+            Debug.LogFormat("<Countdown #{0}> chosenEqIndex = {1}, solutionTest[chosenEqIndex] = {2}, target = {3}", moduleId,chosenEqIndex, solutionTest[chosenEqIndex], target);
+            solutionTest = solutionTest.Where(x => x != solutionTest[chosenEqIndex]).ToArray(); //remove the used equation
+            if (target < 100 || target > 999)
+            {
+                string[] outArray2 = new string[solutionTest.Count()];
+                for (int i = 0; i < solutionTest.Count(); i++) outArray2[i] = solutionTest[i].ToString();
+                Debug.LogFormat("<Countdown #{0}> solutionTest = {1}", moduleId, string.Join(", ", outArray2));
+            }
         }
         Logging();
     }
@@ -139,9 +150,9 @@ public class countdownScript : MonoBehaviour
         }
     }
 
-    void GenerateTarget()
+    void GenerateTarget(int sendEquation)
     {
-        chosenEquation = UnityEngine.Random.Range(0,15);
+        chosenEquation = sendEquation;
         if(chosenEquation == 0)
         {
             target = (selectedNumbers[5] * selectedNumbers[1]) + (selectedNumbers[0] - selectedNumbers[4]) + (selectedNumbers[2] - selectedNumbers[3]);
