@@ -39,7 +39,7 @@ public class countdownScript : MonoBehaviour
     private int equationsDone = 0;
     private int boardFirst = 0;
     private int mostRecentSolve = 0;
-    private int[] solutionTest = new int[15];
+    private int[] solutionTest = new int[15] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 };
 
     //Logging
     static int moduleIdCounter = 1;
@@ -84,14 +84,13 @@ public class countdownScript : MonoBehaviour
     {
         GenerateNumbers();
         target = 1;
-        solutionTest = new int[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
         while ((target < 100 || target > 999))
         {
             if ((solutionTest.Count() < 3)) //this avoids infinite loops, or just bad situations
             {
                 GenerateNumbers();
                 Debug.LogFormat("<Countdown #{0}> Numbers have been regenerated.", moduleId);
-                solutionTest = new int[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
+                solutionTest = new int[15] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
                 Debug.LogFormat("<Countdown #{0}> solutionTest reinstantiated.", moduleId);
             }
             int chosenEqIndex = UnityEngine.Random.Range(0, solutionTest.Count());
@@ -112,6 +111,7 @@ public class countdownScript : MonoBehaviour
     {
         equationsDone = 0;
         boardFirst = 0;
+        selectedLarge.Clear();
         foreach(TextMesh equation in boardWriting)
         {
             equation.text = "";
