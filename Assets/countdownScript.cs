@@ -456,6 +456,7 @@ public class countdownScript : MonoBehaviour
             clockAnimation.SetBool("restart", true);
             selectedLarge.Clear();
             clockOn = false;
+            mostRecentSolve = 0;
             Reset();
             Start();
             yield return new WaitForSeconds(2f);
@@ -472,7 +473,6 @@ public class countdownScript : MonoBehaviour
         operatorAdded = false;
         selectedOperation = "";
         boardFirst = 0;
-        mostRecentSolve = 0;
         foreach(ClickableNumbers number in numbers)
         {
             number.numberText.color = textColours[0];
